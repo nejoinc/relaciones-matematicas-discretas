@@ -623,5 +623,5 @@ R = {(1,1), (2,2), (3,3), (1,2), (1,3), (2,3)} representa 1 ≤ 2 ≤ 3
 
 **¡Éxito en tu exposición! 🚀**
 
-*Creado para el estudio de Relaciones Binarias en Matemáticas Discretas*
+*Creado por jose manuel jaramillo valencia para el estudio de Relaciones Binarias en Matemáticas Discretas*
 
