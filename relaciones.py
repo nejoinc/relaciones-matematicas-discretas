@@ -339,31 +339,33 @@ class RelacionApp:
         
         explicaciones = []
         
-        # Verificar reflexividad
+        # Verificar reflexividad e irreflexividad
         es_reflexiva = self.es_reflexiva()
-        self.marcar_propiedad("REFLEXIVA", "SI" if es_reflexiva else "NO")
-        explicaciones.append(f"REFLEXIVA: {'SÍ' if es_reflexiva else 'NO'} - " +
-                           ("Todos los elementos tienen lazo (a,a)" if es_reflexiva 
-                            else "No todos los elementos tienen lazo"))
-        
-        # Verificar irreflexividad (anti-reflexiva)
         es_irreflexiva = self.es_irreflexiva()
+        
         if es_irreflexiva:
             self.marcar_propiedad("REFLEXIVA", "ANTI")
             explicaciones.append("ANTI-REFLEXIVA: SÍ - Ningún elemento tiene lazo (a,a)")
+        elif es_reflexiva:
+            self.marcar_propiedad("REFLEXIVA", "SI")
+            explicaciones.append("REFLEXIVA: SÍ - Todos los elementos tienen lazo (a,a)")
+        else:
+            self.marcar_propiedad("REFLEXIVA", "NO")
+            explicaciones.append("REFLEXIVA: NO - No todos los elementos tienen lazo")
         
-        # Verificar simetría
+        # Verificar simetría y antisimetría
         es_simetrica = self.es_simetrica()
-        self.marcar_propiedad("SIMÉTRICA", "SI" if es_simetrica else "NO")
-        explicaciones.append(f"SIMÉTRICA: {'SÍ' if es_simetrica else 'NO'} - " +
-                           ("Para todo (a,b), existe (b,a)" if es_simetrica 
-                            else "Existe (a,b) sin su (b,a)"))
-        
-        # Verificar antisimetría
         es_antisimetrica = self.es_antisimetrica()
+        
         if es_antisimetrica:
             self.marcar_propiedad("SIMÉTRICA", "ANTI")
             explicaciones.append("ANTI-SIMÉTRICA: SÍ - Si (a,b) y (b,a) entonces a=b")
+        elif es_simetrica:
+            self.marcar_propiedad("SIMÉTRICA", "SI")
+            explicaciones.append("SIMÉTRICA: SÍ - Para todo (a,b), existe (b,a)")
+        else:
+            self.marcar_propiedad("SIMÉTRICA", "NO")
+            explicaciones.append("SIMÉTRICA: NO - Existe (a,b) sin su (b,a)")
         
         # Verificar transitividad
         es_transitiva = self.es_transitiva()
