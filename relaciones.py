@@ -382,6 +382,7 @@ class RelacionApp:
                             else "No cumple todas las condiciones"))
         
         # Verificar orden estricto (irreflexiva + antisimétrica + transitiva)
+        # IMPORTANTE: Orden estricto y orden parcial son MUTUAMENTE EXCLUYENTES
         es_orden_estricto = es_irreflexiva and es_antisimetrica and es_transitiva
         self.marcar_propiedad("DE ORDEN ESTRICTO", "SI" if es_orden_estricto else "NO")
         explicaciones.append(f"DE ORDEN ESTRICTO: {'SÍ' if es_orden_estricto else 'NO'} - " +
@@ -389,18 +390,26 @@ class RelacionApp:
                             else "No cumple todas las condiciones"))
         
         # Verificar orden parcial (reflexiva + antisimétrica + transitiva)
-        es_orden_parcial = es_reflexiva and es_antisimetrica and es_transitiva
+        # Si es orden estricto (irreflexiva), NO puede ser orden parcial (reflexiva)
+        es_orden_parcial = es_reflexiva and es_antisimetrica and es_transitiva and not es_orden_estricto
         self.marcar_propiedad("DE ORDEN PARCIAL", "SI" if es_orden_parcial else "NO")
-        explicaciones.append(f"DE ORDEN PARCIAL: {'SÍ' if es_orden_parcial else 'NO'} - " +
-                           ("Es reflexiva, antisimétrica y transitiva" if es_orden_parcial 
-                            else "No cumple todas las condiciones"))
+        if es_orden_estricto:
+            explicaciones.append("DE ORDEN PARCIAL: NO - Es orden estricto (mutuamente excluyente)")
+        else:
+            explicaciones.append(f"DE ORDEN PARCIAL: {'SÍ' if es_orden_parcial else 'NO'} - " +
+                               ("Es reflexiva, antisimétrica y transitiva" if es_orden_parcial 
+                                else "No cumple todas las condiciones"))
         
         # Verificar orden total (orden parcial + comparabilidad total)
-        es_orden_total = es_orden_parcial and self.es_total()
+        # Si es orden estricto, tampoco puede ser orden total
+        es_orden_total = es_orden_parcial and self.es_total() and not es_orden_estricto
         self.marcar_propiedad("DE ORDEN TOTAL", "SI" if es_orden_total else "NO")
-        explicaciones.append(f"DE ORDEN TOTAL: {'SÍ' if es_orden_total else 'NO'} - " +
-                           ("Es orden parcial y cualquier par es comparable" if es_orden_total 
-                            else "No es orden parcial o faltan comparaciones"))
+        if es_orden_estricto:
+            explicaciones.append("DE ORDEN TOTAL: NO - Es orden estricto (mutuamente excluyente)")
+        else:
+            explicaciones.append(f"DE ORDEN TOTAL: {'SÍ' if es_orden_total else 'NO'} - " +
+                               ("Es orden parcial y cualquier par es comparable" if es_orden_total 
+                                else "No es orden parcial o faltan comparaciones"))
         
         # Mostrar explicaciones
         self.text_explicacion.delete('1.0', tk.END)
